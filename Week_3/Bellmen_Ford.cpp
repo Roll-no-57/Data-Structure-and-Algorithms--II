@@ -15,6 +15,7 @@ public:
 	*   S: source vertex to start traversing graph with
 	*   V: number of vertices
 	*/
+
 	vector<int> bellman_ford(int V, vector<vector<int>>& edges, int S,vector<int> &parent) {
 		vector<int> dist(V, 1e8);
 		dist[S] = 0;
