@@ -94,6 +94,7 @@ test case 1:
 2 4 4
 3 4 1
 4
+output : 1 4
 
 test case 2:
 4 6
@@ -104,6 +105,7 @@ test case 2:
 4 2 2
 4 3 9
 4
+output : 1 2 3 4
 
 test case 3:
 4 6
@@ -113,7 +115,32 @@ test case 3:
 3 1 4
 4 2 2
 4 3 9
-5
+3
+output : 1 3
+
+test case 4:
+5 8
+1 2 2
+1 3 4
+1 5 8
+2 3 3
+2 4 5
+2 5 2
+3 4 1
+4 5 1
+4
+outout : 1 4
+
+test case 5:
+5 6
+1 2 2
+1 5 8
+2 3 3
+2 5 2
+3 4 1
+4 5 1
+2
+output : 1
 
 
 */
