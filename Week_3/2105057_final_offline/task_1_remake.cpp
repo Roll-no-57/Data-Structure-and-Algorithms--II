@@ -1,56 +1,72 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int INF = INT_MAX;
-int n, m, a, b, l, h, s, d;
-struct Edge
-{
-    int u, v, w = INF;
-};
-vector<Edge> edges;
-vector<int> dist, distFromB;
 
-void bellmanFord(int src)
+#define INF 1e8
+
+
+int ModifiedDijkstra(int n,vector<vector<int>> Graph[],vector<int> &gasPrice,int s,int destination,int capacity)
 {
-    dist[src] = 0;
-    distFromB[b] = 0;
-    for (int i = 0; i < n; i++)
-    {
-        for (Edge &e : edges)
-        {
-            if (dist[e.u] != INF && dist[e.u] + e.w < dist[e.v])
-                dist[e.v] = dist[e.u] + e.w;
-            
-            if (distFromB[e.u] != INF && distFromB[e.u] + e.w < distFromB[e.v])
-                distFromB[e.v] = distFromB[e.u] + e.w;
+    
+    vector<vector<int>> dist(n,vector<int>(capacity+1,INF));
+    vector<vector<int>> vis(n,vector<int>(capacity+1,0));
+
+    priority_queue<pair<int,pair<int,int>>, vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> pq;
+
+    dist[s][0] = 0;
+    pq.push({dist[s][0],{s,0}});
+
+    while(!pq.empty()){
+        pair<int,pair<int,int>> p = pq.top();
+        pq.pop();
+
+        int d = p.first;
+        int u = p.second.first;
+        int r = p.second.second;
+
+        if(u == destination)return d;
+
+        if(vis[u][r])continue;
+        vis[u][r] = 1;
+
+        if(r<capacity){
+            dist[u][r+1] = dist[u][r]+gasPrice[u];
+            pq.push({dist[u][r+1],{u,r+1}});
         }
+
+        for(auto v:Graph[u]){
+            int neighbour
+        }
+
+        
     }
 }
 
-int main()
-{
-    cin >> n >> m;
-    dist.resize(n, INF);
-    distFromB.resize(n, INF);
-    for (int i = 0; i < m; i++)
-    {
-        int u, v, w;
-        cin >> u >> v >> w;
-        u--, v--; // 0-based
-        edges.push_back({u, v, w});
+
+
+
+
+int main(){
+    int n,m,capacity;
+    cin>>n>>m>>capacity;
+
+    vector<vector<int>> Graph[n];
+    vector<int> gasPrice(n);
+
+    for(int i=0;i<n;i++) cin>>gasPrice[i];
+
+    for(int i=0;i<m;i++){
+        int u,v,w;
+        cin>>u>>v>>w;
+        Graph[u].push_back({v,w});
+        Graph[v].push_back({u,w});
     }
-    cin >> a >> b >> l >> h >> s >> d;
-    a--, b--, s--, d--; // 0-based
 
-    bellmanFord(s);
+    int s,destination;cin>>s>>destination;
 
-    int distAB = dist[b] - dist[a];
-    int distBA = distFromB[a];
+    int ans = ModifiedDijkstra(n,Graph,gasPrice,s,destination,capacity);
 
-    if (distAB < l || h < (-distBA)) // (i) no improvement possible (ii) any number between range [l, h] will create negative cycle
-        cout << "impossible" << endl;
-    else // answer exists
-        cout << max(l, -distBA) << ' ' << dist[d] - distAB + max(l, -distBA) << endl;
 
-    return 0;
+    if(ans<INF) cout<<ans<<endl;
+    else cout<<"impossible"<<endl;
 }

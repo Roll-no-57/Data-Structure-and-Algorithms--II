@@ -47,6 +47,7 @@ void addedge(int u, int v, int w)
 //vertex class
 struct Vertex
 {
+
     int v;
     int d, r;
     Vertex() {}
@@ -59,6 +60,8 @@ struct Vertex
     {
         return d > oth.d;
     }
+
+
 };
 
 
@@ -79,13 +82,13 @@ int extendedDijstra(int c, int s, int t)
             return d[u][r];
         if (vis[u][r])
             continue;
+
         else
             vis[u][r] = 1;
 
-      
-
         for (int i = 0; i < G[u].size(); i++)
         {
+
             Edge &e = E[G[u][i]];
             int v = e.v;
             if (r < e.w || vis[v][r - e.w])
@@ -95,7 +98,8 @@ int extendedDijstra(int c, int s, int t)
                 d[v][r - e.w] = d[u][r], pq.push(Vertex(v, d[v][r - e.w], r - e.w));
             }
         }
-          if (r < c)
+        
+        if (r < c)
         {
             d[u][r + 1] = d[u][r] + p[u], pq.push(Vertex(u, d[u][r + 1], r + 1));
         }
@@ -121,6 +125,7 @@ int main()
         addedge(u, v, w);
         addedge(v, u, w);
     }
+
     int s, t;
     cin >> s >> t;
     s--, t--;

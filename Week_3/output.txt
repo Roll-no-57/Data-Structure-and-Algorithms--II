@@ -1,0 +1,3 @@
+Minimum total time: 60
+Paths:
+0 -> 7 -> (time: 60)
