@@ -1,124 +1,76 @@
-// A C++ program for Prim's Minimum
-// Spanning Tree (MST) algorithm. The program is
-// for adjacency matrix representation of the graph
-
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-// Number of vertices in the graph
-#define V 8
-#define I INT_MAX
+typedef pair<int,int> pii;
 
+// Function to find sum of weights of edges of the Minimum Spanning Tree.
+void spanningTree()
+{ 
+	// Create an adjacency list representation of the graph
+	int V,E;cin>>V>>E;
 
-void PrintMST(int T[][V-2], int G[V][V]){
-    cout << "\nMinimum Spanning Tree Edges (w/ cost)\n" << endl;
-    int sum {0};
-    for (int i {0}; i<V-2; i++){
-        int c = G[T[0][i]][T[1][i]];
-        cout << "[" << T[0][i] << "]---[" << T[1][i] << "] cost: " << c << endl;
-        sum += c;
-    }
-    cout << endl;
-    cout << "Total cost of MST: " << sum << endl;
-}
-
-//Function to find the Min weighted Edge which return the vertex pair of that edge
-void initialize(int graph[V][V],int near[V],int result [][V-2])
-{
-    int mn = I;
-    int u,v;
-
-    for(int i=1; i<V; i++){
-		near[i] =I;
-        for(int j=1; j<i; j++){  
-            if(graph[i][j] < mn){
-                mn = graph[i][j];
-                u = i;
-                v = j;
-            }
-        }
-    }
+	vector<vector<int>> adj[V];
 	
-	result[0][0] = u;
-	result[1][0] = v;
-	//initialize the near array
-	near[u] =0;
-	near[v] =0;
-
-	for(int i= 1;i<V;i++){
-		if(near[i]!=0 && graph[i][u]<graph[i][v]){
-			near[i] = u;
-		}
-		else if(near[i]!=0 && graph[i][u]>=graph[i][v]){
-			near[i] = v;
-		}
+	// Fill the adjacency list with edges and their weights
+	for (int i = 0; i < E; i++) {
+		int u,v,wt;cin>>u>>v>>wt;
+		u--;v--;
+		adj[u].push_back({v, wt});
+		adj[v].push_back({u, wt});
 	}
-
-    
-}
-
-
-//produce the resulting minimum spannig tree
-void primMST(int graph[V][V])
-{
-
-	int near[V];
-	//resulting array which contains the MST edges
-	int result [2][V-2] {0};
-
-	//initialize the resulting array with the first minimum edge
-	initialize(graph,near,result);
 	
-	//Repeatitive step starts from here
-	for(int i=1;i<V-2;i++){
-		//find the minimum weighted edge from the near array
-		int mn =I;
-		int vertex ;
-		for(int j = 1;j<V;j++){
-			if(near[j]!=0 && graph[j][near[j]]<mn){
-				mn = graph[j][near[j]];
-				vertex = j;
-			}
+	// Create a priority queue to store edges with their weights
+	priority_queue<pii, vector<pii>, greater<pii>> pq;
+	
+	// Create a visited array to keep track of visited vertices
+	vector<bool> visited(V, false);
+	vector<int> parent(V, -1);
+	
+	// Variable to store the result (sum of edge weights)
+	int res = 0;
+	
+	// Start with vertex 0
+	pq.push({0, 0});
+	parent[0] = 0; // First node is always root of MST
+	
+	// Perform Prim's algorithm to find the Minimum Spanning Tree
+	while(!pq.empty()){
+		auto p = pq.top();
+		pq.pop();
+		
+		int wt = p.first; // Weight of the edge
+		int u = p.second; // Vertex connected to the edge
+		
+		if(visited[u] == true){
+			continue; // Skip if the vertex is already visited
 		}
-		//insert the edge in the result array
-		result[0][i] = vertex;
-		result[1][i] = near[vertex];
-		near[vertex] =0;
-
-		//update the near array for the recent inserted vertex
-		for(int j=1;j<V;j++){
-			if(near[j]!=0 && graph[j][near[j]]>graph[j][vertex]){
-				near[j] = vertex;
+		
+		res += wt; // Add the edge weight to the result
+		visited[u] = true; // Mark the vertex as visited
+		
+		// Explore the adjacent vertices
+		for(auto v : adj[u]){
+			// v[0] represents the vertex and v[1] represents the edge weight
+			if(visited[v[0]] == false){
+				pq.push({v[1], v[0]}); // Add the adjacent edge to the priority queue
+				parent[v[0]] = u; // Set the parent of the adjacent vertex
 			}
 		}
 	}
-	PrintMST(result,graph);
+	
+	 // Return the sum of edge weights of the Minimum Spanning Tree
+	 cout<<res<<endl;
+	 for(int i=1;i<V;i++)
+	 {
+	 	cout<<i<<" "<<parent[i]<<endl;
+	 }
 }
-
-
 
 int main()
 {
-	// freopen("input.txt","r",stdin);
-	// freopen("output.txt","w",stdout);
+	
 
-	int graph[V][V] = {
-			{I, I, I, I, I, I, I, I},
-            {I, I, 25, I, I, I, 5, I},
-            {I, 25, I, 12, I, I, I, 10},
-            {I, I, 12, I, 8, I, I, I},
-            {I, I, I, 8, I, 16, I, 14},
-            {I, I, I, I, 16, I, 20, 18},
-            {I, 5, I, I, I, 20, I, I},
-            {I, I, 10, I, 14, 18, I, I},
-						};
-
-	// Print the solution
-	primMST(graph);
+	spanningTree();
 
 	return 0;
 }
-
-// Code by Mosharaf Hossain Apurbo(2105057)
-//offline -1 for DSA-2 course 
-

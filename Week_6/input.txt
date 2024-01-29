@@ -1,0 +1,29 @@
+Clr
+Em
+I 10 Thors
+I 34 Canute
+I 43 Olaf
+I 15 Einer
+I 40 Olmar
+F 45
+I 53 Floki
+S
+I 90 Thorfinn
+I 12 Snake
+I 78 Askeladd
+F 40
+E 40
+F 40
+E 78
+S
+E 12
+E 43
+Em
+E 56
+I 15 Ymir
+Itr
+Clr
+S
+E 90
+END
+

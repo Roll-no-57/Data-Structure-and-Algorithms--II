@@ -170,24 +170,61 @@ int main()
 }
 
 /*
-test case :1
+Problem 2:
+
+
+Case 1:
+
+Input:
 2 2
 70 30 0
 60 20 0
 71 25 0
 71 35 0
 
-output : 1
+Output:
+1
 
-test case :2
 
+Case 2:
+
+Input:
 2 2
 70 30 0
 60 20 0
 70 25 0
 70 35 0
 
-output : 2
+Output:
+2
+
+
+Case 3:
+
+Input:
+4 3
+50 20 1
+50 25 1
+72 30 0
+75 35 0
+55 22 1
+80 35 0
+81 30 0
+
+Output:
+3
+
+
+Case 4:
+
+Input:
+1 1
+50 20 1
+60 30 0
+
+
+Output:
+0
 
 
 */

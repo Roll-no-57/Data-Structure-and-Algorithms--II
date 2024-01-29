@@ -6,7 +6,6 @@ task 2: find the maximum flow from source to sink
 Author : Mosharaf Hossain Apurbo
 Roll: 2105057
 Date : 06-01-2023
-
 */
 
 #include <bits/stdc++.h>
@@ -167,7 +166,10 @@ void printMaxInflow()
             mxInFlowNode = i + 1;
         }
     }
-    std::cout << mxInFlowNode << " " << mxInFlow << std::endl;
+    if(mxInFlow ==0){
+        cout<<"No such node exist "<<endl;
+    }
+    else std::cout << mxInFlowNode << " " << mxInFlow << std::endl;
 }
 
 int main()
@@ -248,24 +250,12 @@ int main()
 }
 
 /*
-test case :1
-6 9
-1 2 7
-1 3 4
-3 2 3
-3 4 2
-2 5 5
-2 4 3
-4 5 3
-4 6 5
-5 6 8
-1 6
-output :2 8
-[{1,2,3},{4,5,6}]
-10
+Problem 1:
 
 
-test case :2
+Case 1:
+
+Input:
 6 9
 1 2 16
 1 3 13
@@ -277,25 +267,53 @@ test case :2
 4 6 20
 5 6 4
 1 6
-output :4 19
-[{1,2,3,5},{4,6}]
+
+Output:
+(a)
+4 19
+
+(b)
+[ {1, 2, 3}, {4, 5, 6} ]
 23
 
 
-test case :3
-6 8
-1 2 5
-1 4 4
-4 2 3
-2 3 6
-3 6 5
-3 5 8
-5 6 2
-4 5 1
-1 6
-output : 2 6
-[{1,2,4},{3,5,6}]
-7
+Case 2:
 
+Input:
+4 4
+1 2 1
+1 3 1
+2 4 1
+3 4 1
+1 4
+
+Output:
+(a)
+2 1
+Or
+3 1
+
+(b)
+[ {1}, {2,3,4} ]
+2
+Or
+[ {1,2,3}, {4} ]
+2
+
+
+Case 3:
+
+Input:
+2 1
+1 2 1
+1 2
+
+Output:
+(a)
+No such node exist. Should handle the case 
+
+(b)
+[ {1}, {2} ]
+1
 
 */

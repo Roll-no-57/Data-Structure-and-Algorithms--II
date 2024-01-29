@@ -103,7 +103,7 @@ int main()
         }
         cout<<endl;
 
-        obj.printRoute(parent,S,destination);
+        // obj.printRoute(parent,S,destination);
 
     }
 }

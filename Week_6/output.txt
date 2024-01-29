@@ -1,0 +1,33 @@
+Unsuccessful
+yes
+10_Thors
+10_Thors(,34_Canute)
+34_Canute(10_Thors,43_Olaf)
+34_Canute(10_Thors(,15_Einer),43_Olaf)
+34_Canute(10_Thors(,15_Einer),43_Olaf(40_Olmar,))
+45 not found
+34_Canute(10_Thors(,15_Einer),43_Olaf(40_Olmar,53_Floki))
+6
+34_Canute(10_Thors(,15_Einer),43_Olaf(40_Olmar,53_Floki(,90_Thorfinn)))
+34_Canute(12_Snake(10_Thors,15_Einer),43_Olaf(40_Olmar,53_Floki(,90_Thorfinn)))
+34_Canute(12_Snake(10_Thors,15_Einer),43_Olaf(40_Olmar,78_Askeladd(53_Floki,90_Thorfinn)))
+40 found
+34_Canute(12_Snake(10_Thors,15_Einer),78_Askeladd(43_Olaf(,53_Floki),90_Thorfinn))
+40 not found
+34_Canute(12_Snake(10_Thors,15_Einer),53_Floki(43_Olaf,90_Thorfinn))
+7
+34_Canute(15_Einer(10_Thors,),53_Floki(43_Olaf,90_Thorfinn))
+34_Canute(15_Einer(10_Thors,),53_Floki(,90_Thorfinn))
+no
+56 not found
+34_Canute(15_Einer(10_Thors,),53_Floki(,90_Thorfinn))
+34_Canute(10_Thors(,15_Ymir),53_Floki(,90_Thorfinn))
+10 =>Thors
+15 =>Ymir
+34 =>Canute
+53 =>Floki
+90 =>Thorfinn
+Successful
+0
+90 not found
+
