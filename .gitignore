@@ -3,3 +3,6 @@
 
 # Ignore .cph folder
 .cph/
+
+# Ignore .vscode folder
+.vscode/
