@@ -1,0 +1,5 @@
+# Ignore .exe files
+*.exe
+
+# Ignore .cph folder
+.cph/

@@ -84,6 +84,7 @@ private:
         {
             if (x == x->parent->left)
             {
+                //type1
                 s = x->parent->right;
                 if (s->color == 1)
                 {
@@ -92,7 +93,8 @@ private:
                     rotateLeft(x->parent);
                     s = x->parent->right;
                 }
-
+                
+                //type2
                 if (s->left->color == 0 && s->right->color == 0)
                 {
                     s->color = 1;
@@ -100,6 +102,7 @@ private:
                 }
                 else
                 {
+                    //type3 
                     if (s->right->color == 0)
                     {
                         s->left->color = 0;
@@ -107,7 +110,7 @@ private:
                         rotateRight(s);
                         s = x->parent->right;
                     }
-
+                    //type4
                     s->color = x->parent->color;
                     x->parent->color = 0;
                     s->right->color = 0;
@@ -429,7 +432,17 @@ private:
         }
 
         string colourNode = root->color ? "R" : "B";
-        string result = to_string(root->data) + "_" + root->name;
+
+        string result;
+        if(colourNode == "R"){
+            // colourNode = "\033[1;31m" + colourNode + "\033[0m";
+             result ="\033[1;31m"+ to_string(root->data) + "_" + root->name + "\033[0m";
+        }else{
+            // colourNode = "\033[1;34m" + colourNode + "\033[0m";
+             result =to_string(root->data) + "_" + root->name ;
+
+        }
+        
 
         if (root->left == NILLNode && root->right == NILLNode)
         {
@@ -538,8 +551,8 @@ public:
 
 int main()
 {
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    // freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout);
     RedBlackTree bst;
 
     while (true)
