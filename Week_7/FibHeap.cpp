@@ -1,11 +1,3 @@
-/*
-    * File:   FibHeap.hpp
-    Offline 7
-    Implementing Fibonacci Heap
-    Aurthor: Mosharaf Hossain Apurbo
-    CSE, 2nd Year, BUET
-    Roll : 2105057
-*/
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -16,8 +8,10 @@ class Node
 public:
     // values
     int key;
+    int value;
     int degree;
     bool mark;
+    char vis;
 
     // pointers
     Node *parent;
@@ -26,11 +20,13 @@ public:
     Node *right;
 
     // constructor
-    Node(int key)
+    Node(int key, int value)
     {
         this->key = key;
+        this->value = value;
         degree = 0;
         mark = false;
+        vis = 'N';
         parent = NULL;
         child = NULL;
         left = this;
@@ -47,7 +43,7 @@ private:
     // pointer of the root list
     Node *root;
     // pointer of the min node
-    Node *minNode;
+    Node *maxNode;
 
     // Helper function to merge the new node with the root list
     void mergeToRootList(Node *newNode)
@@ -116,8 +112,8 @@ private:
             {
                 Node *y = degreeTable[d];
 
-                // make sure x is the smaller node
-                if (x->key > y->key)
+                // make sure x is the greater node
+                if (x->key < y->key)
                 {
                     Node *temp = x;
                     x = y;
@@ -132,14 +128,14 @@ private:
             degreeTable[d] = x;
         }
 
-        // find the minimum node in the root list
+        // find the Maximum node in the root list
         for (int i = 0; i < maxDegree; i++)
         {
             if (degreeTable[i] != NULL)
             {
-                if (degreeTable[i]->key < minNode->key)
+                if (degreeTable[i]->key > maxNode->key)
                 {
-                    minNode = degreeTable[i];
+                    maxNode = degreeTable[i];
                 }
             }
         }
@@ -225,49 +221,52 @@ private:
         }
     }
 
-    // Helper function to find a node with a key
-    Node *findNode(Node *node, int key)
+    Node *findNode(Node *root, int k)
     {
-        if (node == NULL)
+        Node *x = root;
+        x->vis = 'Y';
+        Node *p = NULL;
+
+        if (x->value == k)
         {
-            return NULL;
+            p = x;
+            x->vis = 'N';
+            return p;
         }
 
-        if (node->key == key)
+        if (p == NULL)
         {
-            return node;
+            if (x->child != NULL)
+                p = findNode(x->child, k);
+            if ((x->right)->vis != 'Y')
+                p = findNode(x->right, k);
         }
 
-        // if the node has children, then search the children
-        Node *foundNode = findNode(node->child, key);
-        if (foundNode != NULL)
-        {
-            return foundNode;
-        }
-
-        // if the node has siblings, then search the siblings
-        return findNode(node->right, key);
+        x->vis = 'N';
+        return p;
     }
 
     // decrease the key of a node
 
-    void decreaseKey(Node *x, int k)
+    void increaseKey(Node *x, int k)
     {
-        if (k > x->key)
+        if (k < x->key)
         {
-            cout << "New key is greater than the current key" << endl;
+            cout << "New key is smaller than the current key" << endl;
             return;
         }
+
         x->key = k;
         Node *bap = x->parent;
-        if (bap != NULL && x->key < bap->key)
+        if (bap != NULL && x->key > bap->key)
         {
             cut(x, bap);
             cascadingCut(bap);
         }
-        if (x->key < minNode->key)
+
+        if (x->key > maxNode->key)
         {
-            minNode = x;
+            maxNode = x;
         }
     }
 
@@ -277,20 +276,32 @@ public:
     {
         n = 0;
         root = NULL;
-        minNode = NULL;
+        maxNode = NULL;
     }
 
-    // returns the pointer of the minimum node
-    Node *minimum()
+    // returns the number of nodes in the heap
+    int size()
     {
-        return minNode;
+        return n;
+    }
+
+    // return true if the heap is empty
+    bool isEmpty()
+    {
+        return root == NULL;
+    }
+
+    // returns the pointer of the maximum node
+    Node *maximum()
+    {
+        return maxNode;
     }
 
     // insert a node into the heap
-    void insert(int key)
+    void insert(int key, int value)
     {
 
-        Node *newNode = new Node(key);
+        Node *newNode = new Node(key, value);
         // points to itself first beacuse it always added to the root list
         newNode->left = newNode;
         newNode->right = newNode;
@@ -299,9 +310,9 @@ public:
         mergeToRootList(newNode);
 
         // if the new node is smaller than the min node, update the min node
-        if (minNode == NULL || newNode->key < minNode->key)
+        if (maxNode == NULL || newNode->key > maxNode->key)
         {
-            minNode = newNode;
+            maxNode = newNode;
         }
 
         // increase the number of nodes
@@ -309,51 +320,51 @@ public:
     }
 
     // Meld two fibonacci heap operation
-    FibonacciHeap *meld(FibonacciHeap *h2, FibonacciHeap *h1)
+    FibonacciHeap *meld(FibonacciHeap *h2)
     {
         // create a new Heap and set the root of the new Heap to the root of the first Heap
         FibonacciHeap *newHeap = new FibonacciHeap();
-        newHeap->root = h1->root;
+        newHeap->root = this->root;
 
-        // set the minNode of the new node to the minimum of the two heaps
-        if ((h1->minNode == NULL) || (h2->minNode != NULL && h2->minNode->key < h1->minNode->key))
+        // set the maxNode of the new node to the maximum of the two heaps
+        if ((this->maxNode == NULL) || (h2->maxNode != NULL && h2->maxNode->key > this->maxNode->key))
         {
-            newHeap->minNode = h2->minNode;
+            newHeap->maxNode = h2->maxNode;
         }
         else
         {
-            newHeap->minNode = h1->minNode;
+            newHeap->maxNode = this->maxNode;
         }
 
         // Merge the root list of the two heaps
         Node *h2Left = h2->root->left;
-        h2->root->left = h1->root->left;
-        h1->root->left->right = h2->root;
-        h2Left->right = h1->root;
-        h1->root->left = h2Left;
+        h2->root->left = this->root->left;
+        this->root->left->right = h2->root;
+        h2Left->right = this->root;
+        this->root->left = h2Left;
 
         // update the number of nodes
-        newHeap->n = h1->n + h2->n;
+        newHeap->n = this->n + h2->n;
 
         // return the new heap
         return newHeap;
     }
 
-    // remove the minimum node from the heap
-    // extract min consolidates min-heap-ordered trees
+    // remove the maximum node from the heap
+    // extract max consolidates max-heap-ordered trees
 
-    Node *extractMin()
+    Node *extractmax()
     {
-        Node *extractNode = minNode;
+        Node *extractNode = maxNode;
 
-        // We can extract the min node if it is not NULL
+        // We can extract the max node if it is not NULL
         if (extractNode != NULL)
         {
-            // if the min node has children, add them to the root list
+            // if the max node has children, add them to the root list
             if (extractNode->child != NULL)
             {
 
-                // extract the children of the min node
+                // extract the children of the max node
                 vector<Node *> children;
                 iterate(extractNode->child, children);
 
@@ -367,17 +378,17 @@ public:
 
             removeNodeFromRootList(extractNode);
 
-            // if the min Node is the only node in the root list then set the root to NUll and minNode to Null
+            // if the max Node is the only node in the root list then set the root to NUll and maxNode to Null
             if (extractNode == extractNode->right)
             {
                 root = NULL;
-                minNode = NULL;
+                maxNode = NULL;
             }
             else
             {
-                // set the minNode to the right of the extractNode
-                minNode = extractNode->right;
-                // consolidate the heap and update the minNode
+                // set the maxNode to the right of the extractNode
+                maxNode = extractNode->right;
+                // consolidate the heap and update the maxNode
                 consolidate();
             }
 
@@ -388,24 +399,36 @@ public:
         return extractNode;
     }
 
-    void decrease(int key, int newKey)
+    void increase(int value, int newKey)
     {
-        Node *ptr = findHeap(key);
-        decreaseKey(ptr, newKey);
+
+        Node *ptr = findHeap(value);
+        if (ptr != NULL)
+            increaseKey(ptr, newKey);
     }
 
-    // delete a node from the heap
-    Node *deleteNode(Node *node)
+
+    //deletes the node
+    void deleteNode(int value)
     {
-        decreaseKey(node, INT_MIN);
-        Node *extracted = extractMin();
-        return extracted;
+        Node *ptr = findHeap(value);
+        if (ptr != NULL)
+        {
+            increaseKey(ptr, INT_MAX);
+            Node *extracted = extractmax();
+        }
     }
 
     // find the pointer of a key in the heap
-    Node *findHeap(int key)
+    Node *findHeap(int value)
     {
-        return findNode(root, key);
+        // cout << "key : " << root->key << endl;
+        if (findNode(root, value) == NULL)
+        {
+            cout << "value not found" << endl;
+            return NULL;
+        }
+        return findNode(root, value);
     }
 
     void printHeap()
@@ -417,6 +440,28 @@ public:
             cout << root[i]->key << "(degree:" << root[i]->degree << ")"
                  << " ";
         }
+        cout << endl;
+    }
+
+    int Display()
+    {
+        Node *p = root;
+        if (p == NULL)
+        {
+            cout << "The Heap is Empty" << endl;
+            return 0;
+        }
+        cout << "The root nodes of Heap are: " << endl;
+
+        do
+        {
+            cout << p->key;
+            p = p->right;
+            if (p != root)
+            {
+                cout << "-->";
+            }
+        } while (p != root && p->right != NULL);
         cout << endl;
     }
 
@@ -437,34 +482,43 @@ public:
             } while (current != root);
         }
 
-        cout << "--------------------" << endl;
-        cout << "-- Fibonacci Heap --" << endl;
-        cout << "--------------------" << endl;
-        cout << "Total nodes: " << n << endl;
-        cout << "Minimum: " << (minNode->key) << endl;
-        cout << "Root list node: " << (root ? root->key : -1) << endl;
-        cout << "Root list: ";
-        for (int key : root_keys)
-        {
-            cout << key << " ";
-        }
-        cout << endl;
+        // cout << "--------------------" << endl;
+        // cout << "-- Fibonacci Heap --" << endl;
+        // cout << "--------------------" << endl;
+        // cout << "Total nodes: " << n << endl;
+        // cout << "Maximum: " << (maxNode->key) << endl;
+        // cout << "Root list node: " << (root ? root->key : -1) << endl;
+        // cout << "Root list: ";
+        // for (int key : root_keys)
+        // {
+        //     cout << key << " ";
+        // }
+        // cout << endl;
+
+        int rootKeyIndex =0;
 
         while (!unvisited.empty())
         {
             Node *node = unvisited.front();
+
+            if(node->key==root_keys[rootKeyIndex]){
+                cout << "Tree " << ++rootKeyIndex<<": " << endl;
+            }
+
             unvisited.pop_front();
             if (node->mark && (find(marked_nodes.begin(), marked_nodes.end(), node->key) == marked_nodes.end()))
             {
                 marked_nodes.push_back(node->key);
             }
             Node *child = node->child;
+            cout<<"       ("<<node->key<<","<<node->value<<")-->";
             if (child)
             {
                 Node *current_child = child;
                 do
                 {
-                    cout << "Children of " << node->key << ": " << current_child->key << " ";
+                    // cout << "Children of " << node->key << ": " << current_child->key << " ";
+                    cout<<"   ("<<current_child->key<<","<<current_child->value<<")";
                     if (current_child->child)
                     {
                         unvisited.push_back(current_child);
@@ -477,6 +531,10 @@ public:
                 } while (current_child != child);
                 cout << endl;
             }
+            else
+            {
+                cout<<endl;
+            }
         }
         if (print_marked)
         {
@@ -487,60 +545,90 @@ public:
             }
             cout << endl;
         }
-        cout << "--------------------" << endl
-             << endl;
+        cout<<endl;
     }
 };
 
-int main()
-{
-    FibonacciHeap fh1, fh2;
-    fh1.insert(545);
-    fh1.insert(345);
-    fh1.insert(445);
-    fh1.insert(245);
-    fh1.insert(145);
-    fh1.insert(7);
-    fh2.insert(40);
-    fh2.insert(50);
-    fh2.insert(60);
-    fh1.insert(100);
-    fh2.insert(200);
-    fh2.insert(300);
-    fh2.insert(400);
-    fh2.insert(500);
-    fh2.insert(600);
 
-    cout << "Heap 1:" << endl;
-    fh1.printHeap();
-    cout << "Heap 2:" << endl;
-    fh2.printHeap();
+// // Main function
+// int main() {
+//     // Create an instance of the Fibonacci Heap
+//     FibonacciHeap fibHeap1;
+//     FibonacciHeap fibHeap2;
 
-   cout<< fh1.findHeap(100)->key<<endl;
-   fh1.decrease(100, 10);
-   fh1.printHeap();
-   fh1.extractMin();
-    fh1.printHeap();
-    fh1.decrease(245,1);
-    fh1.print_fibonacci_heap();
+//         cout << "Fibonacci Heap 1 is empty: " << (fibHeap1.isEmpty() ? "true" : "false") << endl;
 
-   // Melding heap fh2 into fh1
-    FibonacciHeap *meldedHeap = fh1.meld(&fh2, &fh1);
 
-    cout << "Melded Heap:" << endl;
-    meldedHeap->printHeap();
+//     // Insert some nodes into the Fibonacci Heaps
+//     fibHeap1.insert(5, 50);
+//     fibHeap1.insert(3, 30);
+//     fibHeap1.insert(7, 70);
+//     fibHeap1.insert(2, 20);
+//     fibHeap1.insert(4, 40);
+//     fibHeap2.insert(8, 80);
+//     fibHeap2.insert(1, 10);
+//     fibHeap2.insert(6, 60);
+//     fibHeap2.insert(9, 90);
 
-    // Extracting minimum from melded heap
-    Node *min = meldedHeap->minimum();
-    cout << "Minimum value in the melded heap: " << min->key << endl;
 
-    Node *extracted_min = meldedHeap->extractMin();
-    cout << "Extracted minimum value: " << extracted_min->key << endl;
+//     // // Display the Fibonacci Heaps
+//     cout << "Fibonacci Heap 1:" << endl;
+//     fibHeap1.print_fibonacci_heap();
+//     cout << "Fibonacci Heap 2:" << endl;
+//     fibHeap2.print_fibonacci_heap();
 
-    cout << "Heap after extraction:" << endl;
-    meldedHeap->print_fibonacci_heap();
 
-    delete meldedHeap;
+    
 
-    return 0;
-}
+//     // // Meld the two Fibonacci Heaps
+//     FibonacciHeap* meldedHeap = fibHeap1.meld(&fibHeap2);
+
+//     // // Display the melded Fibonacci Heap
+//     cout << "Melded Fibonacci Heap:" << endl;
+//     meldedHeap->print_fibonacci_heap();
+
+//     // // Check if the Fibonacci Heap is empty
+//      cout << "Fibonacci Heap 1 is empty: " << (fibHeap1.isEmpty() ? "true" : "false") << endl;
+//     cout << "Fibonacci Heap 2 is empty: " << (fibHeap2.isEmpty() ? "true" : "false") << endl;
+
+//     // // Increase the key of a node in the Fibonacci Heap
+//     fibHeap1.increase(20, 10);
+
+//     // // Display the Fibonacci Heap after increasing key
+//     cout << "Fibonacci Heap 1 after increasing key:" << endl;
+//     fibHeap1.print_fibonacci_heap();
+//     // fibHeap1.Display();
+
+//     // // Find a node in the Fibonacci Heap
+//     Node* foundNode = fibHeap1.findHeap(50);
+//     if (foundNode != NULL) {
+//         cout << "Node found: " << foundNode->key << " (" << foundNode->value << ")" << endl;
+//     } else {
+//         cout << "Node not found." << endl;
+//     }
+
+//     // // Delete a node from the Fibonacci Heap
+//     fibHeap1.deleteNode(20);
+
+//     // // Display the Fibonacci Heap after deletion
+//     cout << "Fibonacci Heap 1 after deletion:" << endl;
+//     fibHeap1.print_fibonacci_heap();
+
+//     // // Extract the maximum node from the Fibonacci Heap
+//     Node* maxNode = fibHeap1.extractmax();
+//     if (maxNode != NULL) {
+//         cout << "Extracted max node: " << maxNode->key << " (" << maxNode->value << ")" << endl;
+//     } else {
+//         cout << "Fibonacci Heap 1 is empty." << endl;
+//     }
+
+//     // // Display the Fibonacci Heap after extraction
+//     cout << "Fibonacci Heap 1 after extraction:" << endl;
+//     fibHeap1.print_fibonacci_heap();
+//     // fibHeap1.Display();
+
+//     // // Delete the melded Fibonacci Heap
+//     delete meldedHeap;
+
+//     return 0;
+// }
