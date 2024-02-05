@@ -86,7 +86,7 @@ int priorityQueue::find_max(FibonacciHeap *heap)
 
 void priorityQueue::print(FibonacciHeap *heap)
 {
-    heap->print_fibonacci_heap();
+    heap->print();
 }
 
 void priorityQueue::test()

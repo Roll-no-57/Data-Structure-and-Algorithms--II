@@ -431,41 +431,9 @@ public:
         return findNode(root, value);
     }
 
-    void printHeap()
-    {
-        vector<Node *> root;
-        iterate(this->root, root);
-        for (int i = 0; i < root.size(); i++)
-        {
-            cout << root[i]->key << "(degree:" << root[i]->degree << ")"
-                 << " ";
-        }
-        cout << endl;
-    }
+    // print the heap
 
-    int Display()
-    {
-        Node *p = root;
-        if (p == NULL)
-        {
-            cout << "The Heap is Empty" << endl;
-            return 0;
-        }
-        cout << "The root nodes of Heap are: " << endl;
-
-        do
-        {
-            cout << p->key;
-            p = p->right;
-            if (p != root)
-            {
-                cout << "-->";
-            }
-        } while (p != root && p->right != NULL);
-        cout << endl;
-    }
-
-    void print_fibonacci_heap(bool print_marked = false)
+    void print(bool print_marked = false)
     {
         deque<Node *> unvisited;
         vector<int> root_keys;
@@ -481,19 +449,6 @@ public:
                 current = current->right;
             } while (current != root);
         }
-
-        // cout << "--------------------" << endl;
-        // cout << "-- Fibonacci Heap --" << endl;
-        // cout << "--------------------" << endl;
-        // cout << "Total nodes: " << n << endl;
-        // cout << "Maximum: " << (maxNode->key) << endl;
-        // cout << "Root list node: " << (root ? root->key : -1) << endl;
-        // cout << "Root list: ";
-        // for (int key : root_keys)
-        // {
-        //     cout << key << " ";
-        // }
-        // cout << endl;
 
         int rootKeyIndex =0;
 
@@ -549,86 +504,3 @@ public:
     }
 };
 
-
-// // Main function
-// int main() {
-//     // Create an instance of the Fibonacci Heap
-//     FibonacciHeap fibHeap1;
-//     FibonacciHeap fibHeap2;
-
-//         cout << "Fibonacci Heap 1 is empty: " << (fibHeap1.isEmpty() ? "true" : "false") << endl;
-
-
-//     // Insert some nodes into the Fibonacci Heaps
-//     fibHeap1.insert(5, 50);
-//     fibHeap1.insert(3, 30);
-//     fibHeap1.insert(7, 70);
-//     fibHeap1.insert(2, 20);
-//     fibHeap1.insert(4, 40);
-//     fibHeap2.insert(8, 80);
-//     fibHeap2.insert(1, 10);
-//     fibHeap2.insert(6, 60);
-//     fibHeap2.insert(9, 90);
-
-
-//     // // Display the Fibonacci Heaps
-//     cout << "Fibonacci Heap 1:" << endl;
-//     fibHeap1.print_fibonacci_heap();
-//     cout << "Fibonacci Heap 2:" << endl;
-//     fibHeap2.print_fibonacci_heap();
-
-
-    
-
-//     // // Meld the two Fibonacci Heaps
-//     FibonacciHeap* meldedHeap = fibHeap1.meld(&fibHeap2);
-
-//     // // Display the melded Fibonacci Heap
-//     cout << "Melded Fibonacci Heap:" << endl;
-//     meldedHeap->print_fibonacci_heap();
-
-//     // // Check if the Fibonacci Heap is empty
-//      cout << "Fibonacci Heap 1 is empty: " << (fibHeap1.isEmpty() ? "true" : "false") << endl;
-//     cout << "Fibonacci Heap 2 is empty: " << (fibHeap2.isEmpty() ? "true" : "false") << endl;
-
-//     // // Increase the key of a node in the Fibonacci Heap
-//     fibHeap1.increase(20, 10);
-
-//     // // Display the Fibonacci Heap after increasing key
-//     cout << "Fibonacci Heap 1 after increasing key:" << endl;
-//     fibHeap1.print_fibonacci_heap();
-//     // fibHeap1.Display();
-
-//     // // Find a node in the Fibonacci Heap
-//     Node* foundNode = fibHeap1.findHeap(50);
-//     if (foundNode != NULL) {
-//         cout << "Node found: " << foundNode->key << " (" << foundNode->value << ")" << endl;
-//     } else {
-//         cout << "Node not found." << endl;
-//     }
-
-//     // // Delete a node from the Fibonacci Heap
-//     fibHeap1.deleteNode(20);
-
-//     // // Display the Fibonacci Heap after deletion
-//     cout << "Fibonacci Heap 1 after deletion:" << endl;
-//     fibHeap1.print_fibonacci_heap();
-
-//     // // Extract the maximum node from the Fibonacci Heap
-//     Node* maxNode = fibHeap1.extractmax();
-//     if (maxNode != NULL) {
-//         cout << "Extracted max node: " << maxNode->key << " (" << maxNode->value << ")" << endl;
-//     } else {
-//         cout << "Fibonacci Heap 1 is empty." << endl;
-//     }
-
-//     // // Display the Fibonacci Heap after extraction
-//     cout << "Fibonacci Heap 1 after extraction:" << endl;
-//     fibHeap1.print_fibonacci_heap();
-//     // fibHeap1.Display();
-
-//     // // Delete the melded Fibonacci Heap
-//     delete meldedHeap;
-
-//     return 0;
-// }
