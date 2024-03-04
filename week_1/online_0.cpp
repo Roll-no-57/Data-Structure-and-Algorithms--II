@@ -15,8 +15,33 @@ typedef long long ll;
 
 const ll mod = 1e9 + 7, MOD = 998244353;
 
+
+
+
 void solve() {
     // Your solution goes here
+    int n,m ; cin >> n>> m;
+    vector<vector<int>> adj(n);
+
+    F0R(i,m) {
+        int u,v; cin >> u >> v;
+        u--; v--;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    vector<pair<int,int>>  connect ;
+
+    int q ;cin>>q;
+    for(int i=0;i<q;i++){
+        int u,v; cin >> u >> v;
+        u--; v--;
+        connect.push_back({u,v});
+    }
+
+    
+
+
 }
 
 int main() {

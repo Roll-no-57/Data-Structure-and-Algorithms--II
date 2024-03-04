@@ -25,10 +25,10 @@ void spanningTree()
 	// Create a visited array to keep track of visited vertices
 	vector<bool> visited(V, false);
 	vector<int> parent(V, -1);
-	
+
 	// Variable to store the result (sum of edge weights)
 	int res = 0;
-	
+
 	// Start with vertex 0
 	pq.push({0, 0});
 	parent[0] = 0; // First node is always root of MST
@@ -37,14 +37,14 @@ void spanningTree()
 	while(!pq.empty()){
 		auto p = pq.top();
 		pq.pop();
-		
+	
 		int wt = p.first; // Weight of the edge
 		int u = p.second; // Vertex connected to the edge
 		
 		if(visited[u] == true){
 			continue; // Skip if the vertex is already visited
 		}
-		
+
 		res += wt; // Add the edge weight to the result
 		visited[u] = true; // Mark the vertex as visited
 		
@@ -60,10 +60,12 @@ void spanningTree()
 	
 	 // Return the sum of edge weights of the Minimum Spanning Tree
 	 cout<<res<<endl;
+
 	 for(int i=1;i<V;i++)
 	 {
 	 	cout<<i<<" "<<parent[i]<<endl;
 	 }
+
 }
 
 int main()

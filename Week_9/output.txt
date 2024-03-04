@@ -1,0 +1,4 @@
+Answer :262
+Used weight :55
+Indices :7 3 2 
+

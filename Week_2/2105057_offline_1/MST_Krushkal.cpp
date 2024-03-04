@@ -30,7 +30,7 @@ public:
             }
             return parent[u] = find(parent[u]);
         }
-        
+
         void Union(int u, int v)
         {
             int parent_u = find(u);
@@ -80,6 +80,7 @@ public:
                 uni.Union(u, v);
             }
         }
+
         for (int i = 0; i < N; i++)
         {
             if (uni.find(i) != uni.find(0))
@@ -128,6 +129,7 @@ public:
         return {critical, pseudo_critical};
     }
 };
+
 int main()
 {
     freopen("input.txt", "r", stdin);
@@ -172,17 +174,3 @@ int main()
 
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

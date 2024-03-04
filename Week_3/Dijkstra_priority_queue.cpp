@@ -12,8 +12,7 @@ using namespace std;
 class Solution
 {
 public:
-
-    vector<int> dijkstra(int V, vector<vector<int>> adj[], int S,vector<int> &parent)
+    vector<int> dijkstra(int V, vector<vector<int>> adj[], int S, vector<int> &parent)
     {
 
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
@@ -21,7 +20,7 @@ public:
         vector<int> dist(V, 1e9);
 
         dist[S] = 0;
-        parent[S]=S;
+        parent[S] = S;
 
         pq.push({0, S});
 
@@ -43,33 +42,33 @@ public:
                 {
                     dist[adjNode] = dis + edgeWeight;
                     pq.push({dist[adjNode], adjNode});
-                    parent[adjNode]= node;
+                    parent[adjNode] = node;
                 }
-
             }
-
         }
         return dist;
     }
 
-    void printRoute(vector<int> &parent,int Start,int destination){
+    void printRoute(vector<int> &parent, int Start, int destination)
+    {
         vector<int> ans;
 
-        cout<<"Route from "<<Start<<" to "<<destination<<" : ";
+        cout << "Route from " << Start << " to " << destination << " : ";
 
-        while(Start!=destination){
+        while (Start != destination)
+        {
             ans.push_back(destination);
             destination = parent[destination];
         }
-        reverse(ans.begin(),ans.end());
+        reverse(ans.begin(), ans.end());
 
-        cout<<Start<<"->";
-        for(auto i:ans){
-            cout<<i<<"->";
+        cout << Start << "->";
+        for (auto i : ans)
+        {
+            cout << i << "->";
         }
-        cout<<"Destination"<<endl;
+        cout << "Destination" << endl;
     }
-
 };
 
 int main()
@@ -81,30 +80,31 @@ int main()
     cin >> tc;
     while (tc--)
     {
-        int V, E, S,destination;
-        cin >> V >> E >> S>>destination;
+        int V, E, S, destination;
+        cin >> V >> E >> S >> destination;
 
         vector<vector<int>> adj[V];
-        vector<int> parent(V,-1);
+        vector<int> parent(V, -1);
 
-        for(int i=0;i<E;i++){
-            int u,v,w;
-            cin>>u>>v>>w;
+        for (int i = 0; i < E; i++)
+        {
+            int u, v, w;
+            cin >> u >> v >> w;
 
-            adj[u].push_back({v,w});
+            adj[u].push_back({v, w});
             // adj[v].push_back({u,w});
         }
 
         Solution obj;
-        vector<int> ans = obj.dijkstra(V,adj,S,parent);
+        vector<int> ans = obj.dijkstra(V, adj, S, parent);
 
-        for(int i=0;i<V;i++){
-            cout<<ans[i]<<" ";
+        for (int i = 0; i < V; i++)
+        {
+            cout << ans[i] << " ";
         }
-        cout<<endl;
+        cout << endl;
 
         // obj.printRoute(parent,S,destination);
-
     }
 }
 /*

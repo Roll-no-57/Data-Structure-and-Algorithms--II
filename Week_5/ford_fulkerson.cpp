@@ -13,7 +13,7 @@ int bfs(int s, int t, vector<int> &parent)
     parent[s] = -2 ;
     queue<int> q;
     q.push(s);
-    q.pop()
+    q.pop();
 
 
     int new_flow = INF;
