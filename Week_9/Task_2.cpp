@@ -163,12 +163,12 @@ int main()
 
     ld ep[] = {0.5, 0.2, 0.1, 0.05};
     ld epsilon;
-    for (int i = 0; i < 4; i++)
+    for (int r = 0; r < 4; r++)
     {
-        epsilon = ep[i];
+        epsilon = ep[r];
         cout<<endl;
         cout<<endl;
-        cout << "After Reduction : "<<(i+1) << endl;
+        cout << "After Reduction : "<<(r+1) << endl;
         ld theta = ((ld)epsilon * (ld)max_value) / (2 * (ld)n);
         cout << "Rounded Instance with Eps: " << epsilon << endl;
         cout << "Theta: " << fixed << setprecision(10) << theta << endl;
